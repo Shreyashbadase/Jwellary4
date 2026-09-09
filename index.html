@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="styles.css">
+<script src="myscripts.js"></script>
+
+<!-- MediaPipe Hand Tracking -->  
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+<title>JEWELS AURELIA Jewellery | Timeless Elegance</title>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+<div class="container navbar">
+
+<button class="menu-btn"
+onclick="toggleMobileMenu()">
+☰
+</button>
+
+
+<div class="logo">
+JEWELS AURELIA
+</div>
+
+
+<ul class="nav-links">
+
+<li>
+<a href="#home">Home</a>
+</li>
+
+<li>
+<a href="#shop">Jewellery</a>
+</li>
+
+<li>
+<a href="#categories">Collections</a>
+</li>
+
+<li>
+<a href="#offers">Offers</a>
+</li>
+
+<li>
+<a href="#contact">Contact</a>
+</li>
+
+</ul>
+
+
+<div class="nav-icons">
+
+
+<!-- SEARCH -->
+
+<button
+class="icon-btn"
+onclick="openSearch()"
+title="Search">
+
+⌕
+
+</button>
+
+
+<!-- FAVORITE -->
+
+<button
+class="icon-btn"
+onclick="openFavorites()"
+title="Favorites">
+
+♡
+
+<span
+class="favorite-count"
+id="favoriteCount">
+
+0
+
+</span>
+
+</button>
+
+
+<!-- CART -->
+
+<button
+class="icon-btn"
+onclick="openCart()"
+title="Cart">
+
+🛒
+
+<span
+class="cart-count"
+id="cartCount">
+
+0
+
+</span>
+
+</button>
+
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ================= AR CAMERA ================= -->
+
+<div id="arModal" class="ar-modal">
+
+    <div class="camera-container">
+
+        <!-- Camera -->
+        <video id="cameraVideo"
+               autoplay
+               playsinline
+               muted>
+        </video>
+
+
+        <!-- AR Canvas -->
+        <canvas id="arCanvas"></canvas>
+
+
+        <!-- Instructions -->
+
+        <div class="instruction" id="instruction">
+            Show your hand to the camera
+        </div>
+
+
+        <!-- Close -->
+
+        <button class="close-btn"
+                onclick="closeAR()">
+            ×
+        </button>
+
+
+        <!-- Camera Message -->
+
+        <div class="camera-message"
+             id="cameraMessage">
+
+            <h2>Opening Camera...</h2>
+
+            <p>
+                Please allow camera permission
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section
+class="hero"
+id="home">
+
+<div class="container">
+
+<div class="hero-content">
+
+<div class="small-title">
+Timeless Jewellery
+</div>
+
+<h1>
+
+Elegance<br>
+That Speaks.
+
+</h1>
+
+<p>
+
+Discover beautifully crafted jewellery designed
+to celebrate your style, your moments and your
+memories.
+
+</p>
+
+<button
+class="primary-btn"
+onclick="document.getElementById('shop').scrollIntoView()">
+
+SHOP COLLECTION
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CATEGORIES
+===================================================== -->
+
+<section
+class="section"
+id="categories">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>
+EXPLORE
+</span>
+
+<h2>
+Shop By Category
+</h2>
+
+</div>
+
+
+<div class="categories">
+
+
+<div
+class="category"
+onclick="filterProducts('Bracelets')">
+
+<div class="category-img">
+
+<!-- <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=500&q=80"> -->
+
+<img src="Img3.png">
+
+</div>
+
+
+<p>
+Bracelets
+</p>
+
+</div>
+
+
+<div
+class="category"
+onclick="filterProducts('Necklaces')">
+
+<div class="category-img">
+
+<!-- <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=500&q=80"> -->
+
+<img src="Img4.png">
+
+</div>
+
+<p>
+Necklaces
+</p>
+
+</div>
+
+
+<div
+class="category"
+onclick="filterProducts('Earrings')">
+
+<div class="category-img">
+
+<!-- <img src="https://images.unsplash.com/photo-1635767798638-3e25273a8236?auto=format&fit=crop&w=500&q=80"> -->
+ <img src="Img5.png">
+
+</div>
+
+<p>
+Earrings
+</p>
+
+</div>
+
+
+<div
+class="category"
+onclick="filterProducts('Jhumka')">
+
+<div class="category-img">
+
+<!-- <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=80"> -->
+ <img src="Img6.png">
+
+</div>
+
+<p>
+Jhumka
+</p>
+
+</div>
+
+
+<div
+class="category"
+onclick="filterProducts('Anklets')">
+
+<div class="category-img">
+
+<!-- <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=500&q=80"> -->
+<img src="Img7.png">
+
+</div>
+
+<p>
+Anklets
+</p>
+
+</div>
+
+
+<div
+class="category"
+onclick="filterProducts('Long Necklaces')">
+
+<div class="category-img">
+
+<!-- <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=500&q=80"> -->
+<img src="Img8.png">
+
+</div>
+
+<p>
+Long Necklaces
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SHOP
+===================================================== -->
+
+<section
+class="section"
+id="shop">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>
+OUR COLLECTION
+</span>
+
+<h2>
+Featured Jewellery
+</h2>
+
+</div>
+
+
+<div class="shop-header">
+
+<div class="filter-buttons">
+
+<button
+class="filter-btn active"
+onclick="filterProducts('All')">
+
+All
+
+</button>
+
+<button
+class="filter-btn"
+onclick="filterProducts('Bracelets')">
+
+Bracelets
+
+</button>
+
+<button
+class="filter-btn"
+onclick="filterProducts('Necklaces')">
+
+Necklaces
+
+</button>
+
+<button
+class="filter-btn"
+onclick="filterProducts('Earrings')">
+
+Earrings
+
+</button>
+
+<button
+class="filter-btn"
+onclick="filterProducts('Jhumka')">
+
+Jhumka
+
+</button>
+
+<button
+class="filter-btn"
+onclick="filterProducts('Anklets')">
+
+Anklets
+
+</button>
+
+</div>
+
+</div>
+
+
+<div
+class="products"
+id="productGrid">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PROMO
+===================================================== -->
+
+<section
+class="promo"
+id="offers">
+
+<div class="container">
+
+<div class="small-title">
+Special Collection
+</div>
+
+<h2>
+Celebrate Your Everyday Elegance
+</h2>
+
+<p>
+Get up to 25% OFF on selected jewellery.
+</p>
+
+<button
+class="primary-btn"
+onclick="document.getElementById('shop').scrollIntoView()">
+
+SHOP NOW
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="section">
+
+<div class="container">
+
+<div class="features">
+
+<div class="feature">
+
+<div class="feature-icon">
+🚚
+</div>
+
+<h3>
+Free Shipping
+</h3>
+
+<p>
+Free delivery on orders above ₹999
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+🔒
+</div>
+
+<h3>
+Secure Payment
+</h3>
+
+<p>
+100% secure payment experience
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+↩️
+</div>
+
+<h3>
+Easy Returns
+</h3>
+
+<p>
+Simple and hassle-free returns
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+💎
+</div>
+
+<h3>
+Premium Quality
+</h3>
+
+<p>
+Beautifully crafted jewellery
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     NEWSLETTER
+===================================================== -->
+
+<section class="newsletter">
+
+<h2>
+Join The Jewels Aurelia Family
+</h2>
+
+<p>
+Subscribe for new collections and exclusive offers.
+</p>
+
+<div class="subscribe">
+
+<input
+type="email"
+placeholder="Enter your email">
+
+<button
+onclick="subscribeUser()">
+SUBSCRIBE
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer id="contact">
+
+<div class="container">
+
+<div class="footer-grid">
+
+
+<div>
+
+<div class="footer-logo">
+JEWELS AURELIA
+</div>
+
+<p>
+Timeless jewellery designed to make
+every moment shine.
+</p>
+
+</div>
+
+
+<div>
+
+<h3>
+Shop
+</h3>
+
+<ul>
+
+<li>
+<a href="#shop">Bracelets</a>
+</li>
+
+<li>
+<a href="#shop">Necklaces</a>
+</li>
+
+<li>
+<a href="#shop">Earrings</a>
+</li>
+
+<li>
+<a href="#shop">Jhumka</a>
+</li>
+
+</ul>
+
+</div>
+
+
+<div>
+
+<h3>
+Customer Care
+</h3>
+
+<ul>
+
+<li>
+<a href="#contact">Contact Us</a>
+</li>
+
+<li>
+<a href="#">Shipping</a>
+</li>
+
+<li>
+<a href="#">Returns</a>
+</li>
+
+<li>
+<a href="#">FAQs</a>
+</li>
+
+</ul>
+
+</div>
+
+
+<div>
+
+<h3>
+Follow Us
+</h3>
+
+<ul>
+
+<li>
+Instagram
+</li>
+
+<li>
+Facebook
+</li>
+
+<li>
+Pinterest
+</li>
+
+<li>
+WhatsApp
+</li>
+
+</ul>
+
+</div>
+
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 Jewels Aurelia Jewellery.
+All Rights Reserved.
+
+</div>
+
+</div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     SEARCH MODAL
+===================================================== -->
+
+<div
+class="search-overlay"
+id="searchOverlay">
+
+<div class="search-box">
+
+<button
+class="close-modal"
+onclick="closeSearch()">
+
+×
+
+</button>
+
+<h2>
+Search Jewellery
+</h2>
+
+<div class="search-input-wrapper">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search bracelets, necklaces, earrings..."
+oninput="performSearch()">
+
+<button
+onclick="performSearch()">
+
+⌕
+
+</button>
+
+</div>
+
+<div
+class="search-results"
+id="searchResults">
+
+<p style="
+text-align:center;
+padding:25px;
+color:#777;
+">
+
+Start typing to search jewellery.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     FAVORITES MODAL
+===================================================== -->
+
+<div
+class="favorite-overlay"
+id="favoriteOverlay">
+
+<div class="favorite-box">
+
+<button
+class="close-modal"
+onclick="closeFavorites()">
+
+×
+
+</button>
+
+<h2>
+♡ My Favorites
+</h2>
+
+<div
+class="favorite-grid"
+id="favoriteGrid">
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CART
+===================================================== -->
+
+<div
+class="cart-overlay"
+id="cartOverlay">
+
+<div class="cart">
+
+<div class="cart-header">
+
+<h2>
+Your Cart
+</h2>
+
+<button
+class="close-cart"
+onclick="closeCart()">
+
+×
+
+</button>
+
+</div>
+
+<div id="cartItems">
+</div>
+
+
+<div class="cart-total">
+
+<div class="total-row">
+
+<span>
+Total
+</span>
+
+<span id="cartTotal">
+₹0
+</span>
+
+</div>
+
+<button
+class="primary-btn"
+style="width:100%;"
+onclick="openCheckout()">
+
+PROCEED TO CHECKOUT
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CHECKOUT
+===================================================== -->
+
+<div
+class="modal"
+id="checkoutModal">
+
+<div class="checkout">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<h2>
+Checkout
+</h2>
+
+<button
+class="close-cart"
+onclick="closeCheckout()">
+
+×
+
+</button>
+
+</div>
+
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+First Name
+</label>
+
+<input
+type="text"
+placeholder="Your name">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Last Name
+</label>
+
+<input
+type="text"
+placeholder="Last name">
+
+</div>
+
+
+<div class="form-group full">
+
+<label>
+Mobile Number
+</label>
+
+<input
+type="tel"
+placeholder="+91 XXXXX XXXXX">
+
+</div>
+
+
+<div class="form-group full">
+
+<label>
+Address
+</label>
+
+<textarea
+rows="3"
+placeholder="House No, Street, Area"></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+City
+</label>
+
+<input
+type="text"
+placeholder="Pune">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+PIN Code
+</label>
+
+<input
+type="text"
+placeholder="411001">
+
+</div>
+
+</div>
+
+
+<h3 style="margin-top:15px;">
+Payment Method
+</h3>
+
+
+<div class="payment">
+
+<label>
+
+<input
+type="radio"
+name="payment"
+checked>
+
+UPI
+
+</label>
+
+
+<label>
+
+<input
+type="radio"
+name="payment">
+
+Credit / Debit Card
+
+</label>
+
+
+<label>
+
+<input
+type="radio"
+name="payment">
+
+Cash on Delivery
+
+</label>
+
+</div>
+
+
+<button
+class="primary-btn"
+style="width:100%;"
+onclick="placeOrder()">
+
+PLACE ORDER
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   PRODUCT DATA
+===================================================== */
+
+const products = [
+
+{
+id:1,
+name:"Royal Gold Bracelet",
+category:"Bracelets",
+price:2499,
+old:3299,
+image:"Img9.png"
+},
+
+{
+id:2,
+name:"Pearl Drop Necklace",
+category:"Necklaces",
+price:3499,
+old:4299,
+image:"Img11.png"
+},
+
+{
+id:3,
+name:"Elegant Pearl Earrings",
+category:"Earrings",
+price:1899,
+old:2499,
+image:"Img12.png"
+},
+
+{
+id:4,
+name:"Traditional Gold Jhumka",
+category:"Jhumka",
+price:2199,
+old:2899,
+image:"Img13.png"
+},
+
+{
+id:5,
+name:"Classic Anklet",
+category:"Anklets",
+price:1299,
+old:1699,
+image:"Img14.png"
+},
+
+{
+id:6,
+name:"Royal Long Necklace",
+category:"Long Necklaces",
+price:4299,
+old:5299,
+image:"Img15.png"
+},
+
+{
+id:7,
+name:"Diamond Style Bracelet",
+category:"Bracelets",
+price:2799,
+old:3599,
+image:"Img17.png"
+},
+
+{
+id:8,
+name:"Golden Style Necklace",
+category:"Necklaces",
+price:3899,
+old:4599,
+image:"Img16.png"
+}
+
+];
+
+
+/* =====================================================
+   CART
+===================================================== */
+
+let cart=[];
+
+
+/* =====================================================
+   FAVORITES
+===================================================== */
+
+let favorites =
+JSON.parse(
+localStorage.getItem("jewelsFavorites")
+) || [];
+
+
+/* =====================================================
+   DISPLAY PRODUCTS
+===================================================== */
+
+function displayProducts(list){
+
+const grid =
+document.getElementById("productGrid");
+
+grid.innerHTML="";
+
+
+if(list.length===0){
+
+grid.innerHTML=`<div style="
+grid-column:1/-1;
+text-align:center;
+padding:50px;
+color:#777;
+">
+No jewellery found.
+</div>`;
+
+return;
+
+}
+
+
+list.forEach(product=>{
+
+const isFavorite =
+favorites.includes(product.id);
+
+
+grid.innerHTML += `
+
+<div class="product-card">
+
+<div class="product-img">
+
+<img
+src="${product.image}"
+alt="${product.name}">
+
+<button
+class="wishlist ${isFavorite ? "active":""}"
+onclick="toggleWishlist(${product.id})">
+
+${isFavorite ? "♥":"♡"}
+
+</button>
+
+</div>
+
+
+<div class="product-info">
+
+<h3>
+${product.name}
+</h3>
+
+<div class="rating">
+★★★★★
+</div>
+
+<div class="price">
+
+₹${product.price.toLocaleString()}
+
+<span class="old-price">
+₹${product.old.toLocaleString()}
+</span>
+
+<div class="product-actions">
+
+<a href="Product.html">
+      <button
+class="try-btn"
+onclick="openAR()">
+
+✨ TRY IT
+
+</button>
+</a>
+
+
+
+
+
+<button
+class="add-cart"
+onclick="addToCart(${product.id})">
+
+ADD TO CART
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+function filterProducts(category){
+
+let filtered;
+
+
+if(category==="All"){
+
+filtered=products;
+
+}else{
+
+filtered =
+products.filter(
+p=>p.category===category
+);
+
+}
+
+
+displayProducts(filtered);
+
+
+/* update active filter */
+
+document
+.querySelectorAll(".filter-btn")
+.forEach(btn=>{
+
+btn.classList.remove("active");
+
+});
+
+
+document
+.querySelectorAll(".filter-btn")
+.forEach(btn=>{
+
+if(
+btn.innerText.trim()===category
+){
+
+btn.classList.add("active");
+
+}
+
+});
+
+
+/* scroll to shop */
+
+document
+.getElementById("shop")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+/* =====================================================
+   WISHLIST / FAVORITE
+===================================================== */
+
+function toggleWishlist(id){
+
+const index =
+favorites.indexOf(id);
+
+
+if(index===-1){
+
+favorites.push(id);
+
+}else{
+
+favorites.splice(index,1);
+
+}
+
+
+/* save */
+
+localStorage.setItem(
+"jewelsFavorites",
+JSON.stringify(favorites)
+);
+
+
+/* update counter */
+
+updateFavoriteCount();
+
+
+/* redraw products */
+
+displayProducts(products);
+
+
+/* redraw favorites */
+
+displayFavorites();
+
+}
+
+
+/* =====================================================
+   FAVORITE COUNT
+===================================================== */
+
+function updateFavoriteCount(){
+
+const count =
+document.getElementById("favoriteCount");
+
+
+if(favorites.length>0){
+
+count.style.display="flex";
+
+count.innerText =
+favorites.length;
+
+}else{
+
+count.style.display="none";
+
+}
+
+}
+
+
+/* =====================================================
+   OPEN FAVORITES
+===================================================== */
+
+function openFavorites(){
+
+displayFavorites();
+
+document
+.getElementById("favoriteOverlay")
+.classList.add("show");
+
+}
+
+
+function closeFavorites(){
+
+document
+.getElementById("favoriteOverlay")
+.classList.remove("show");
+
+}
+
+
+/* =====================================================
+   DISPLAY FAVORITES
+===================================================== */
+
+function displayFavorites(){
+
+const container =
+document.getElementById("favoriteGrid");
+
+
+if(favorites.length===0){
+
+container.innerHTML=`
+
+<div
+class="no-favorites"
+style="grid-column:1/-1;">
+
+<div>
+♡
+</div>
+
+<h3>
+No Favorites Yet
+</h3>
+
+<p>
+Click the ♡ icon on jewellery
+you love.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+const favoriteProducts =
+products.filter(
+p=>favorites.includes(p.id)
+);
+
+
+container.innerHTML="";
+
+
+favoriteProducts.forEach(product=>{
+
+container.innerHTML += `
+
+<div class="favorite-card">
+
+<img
+src="${product.image}"
+alt="${product.name}">
+
+
+<button
+class="remove-favorite"
+onclick="toggleWishlist(${product.id})">
+
+♥
+
+</button>
+
+
+<div class="favorite-card-info">
+
+<h3>
+${product.name}
+</h3>
+
+<p>
+₹${product.price.toLocaleString()}
+</p>
+
+<button
+class="add-cart"
+onclick="addToCart(${product.id}); closeFavorites();">
+
+ADD TO CART
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function openSearch(){
+
+document
+.getElementById("searchOverlay")
+.classList.add("show");
+
+
+document
+.getElementById("searchInput")
+.focus();
+
+}
+
+
+function closeSearch(){
+
+document
+.getElementById("searchOverlay")
+.classList.remove("show");
+
+document
+.getElementById("searchInput")
+.value="";
+
+
+document
+.getElementById("searchResults")
+innerHTML=`
+
+<p style="
+text-align:center;
+padding:25px;
+color:#777;
+">
+
+Start typing to search jewellery.
+
+</p>
+
+`;
+
+}
+
+
+/* =====================================================
+   SEARCH FUNCTION
+===================================================== */
+
+function performSearch(){
+
+const searchText =
+document
+.getElementById("searchInput")
+.value
+.toLowerCase()
+.trim();
+
+
+const resultContainer =
+document.getElementById("searchResults");
+
+
+if(searchText===""){
+
+resultContainer.innerHTML=`
+
+<p style="
+text-align:center;
+padding:25px;
+color:#777;
+">
+
+Start typing to search jewellery.
+
+</p>
+
+`;
+
+return;
+
+}
+
+
+const results =
+products.filter(product=>{
+
+return (
+
+product.name
+.toLowerCase()
+.includes(searchText)
+
+||
+
+product.category
+.toLowerCase()
+.includes(searchText)
+
+);
+
+});
+
+
+if(results.length===0){
+
+resultContainer.innerHTML=`
+
+<div style="
+text-align:center;
+padding:35px;
+color:#777;
+">
+
+<div style="font-size:40px;">
+🔍
+</div>
+
+<h3>
+No Jewellery Found
+</h3>
+
+<p>
+Try another product or category.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+resultContainer.innerHTML="";
+
+
+results.forEach(product=>{
+
+resultContainer.innerHTML += `
+
+<div
+class="search-result-item"
+onclick="selectSearchProduct(${product.id})">
+
+<img
+src="${product.image}">
+
+<div>
+
+<h4>
+${product.name}
+</h4>
+
+<p>
+${product.category}
+</p>
+
+<strong>
+₹${product.price.toLocaleString()}
+</strong>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* =====================================================
+   SEARCH RESULT CLICK
+===================================================== */
+
+function selectSearchProduct(id){
+
+closeSearch();
+
+
+const product =
+products.find(
+p=>p.id===id
+);
+
+
+if(!product) return;
+
+
+/* show product category */
+
+filterProducts(product.category);
+
+
+/* small highlight */
+
+setTimeout(()=>{
+
+const cards =
+document.querySelectorAll(".product-card");
+
+
+cards.forEach(card=>{
+
+if(
+card.innerText
+.includes(product.name)
+){
+
+card.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+card.style.boxShadow =
+"0 0 0 3px #b88a44";
+
+setTimeout(()=>{
+
+card.style.boxShadow="";
+
+},2000);
+
+}
+
+});
+
+},400);
+
+}
+
+
+/* =====================================================
+   CART
+===================================================== */
+
+function addToCart(id){
+
+const product =
+products.find(p=>p.id===id);
+
+const existing =
+cart.find(p=>p.id===id);
+
+
+if(existing){
+
+existing.qty++;
+
+}else{
+
+cart.push({
+...product,
+qty:1
+});
+
+}
+
+
+updateCart();
+
+openCart();
+
+}
+
+
+function updateCart(){
+
+const container =
+document.getElementById("cartItems");
+
+container.innerHTML="";
+
+
+let total=0;
+
+let count=0;
+
+
+cart.forEach(item=>{
+
+total +=
+item.price * item.qty;
+
+count += item.qty;
+
+
+container.innerHTML += `
+
+<div class="cart-item">
+
+<img
+src="${item.image}">
+
+<div style="flex:1;">
+
+<h4>
+${item.name}
+</h4>
+
+<div>
+₹${item.price.toLocaleString()}
+</div>
+
+<div class="qty">
+
+<button
+onclick="changeQty(${item.id},-1)">
+-
+</button>
+
+<span>
+${item.qty}
+</span>
+
+<button
+onclick="changeQty(${item.id},1)">
++
+</button>
+
+<button
+class="remove"
+onclick="removeItem(${item.id})">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+document
+.getElementById("cartCount")
+.innerText=count;
+
+
+document
+.getElementById("cartTotal")
+.innerText=
+"₹"+total.toLocaleString();
+
+}
+
+
+function changeQty(id,change){
+
+const item =
+cart.find(p=>p.id===id);
+
+
+if(!item) return;
+
+
+item.qty += change;
+
+
+if(item.qty<=0){
+
+cart =
+cart.filter(
+p=>p.id!==id
+);
+
+}
+
+
+updateCart();
+
+}
+
+
+function removeItem(id){
+
+cart =
+cart.filter(
+p=>p.id!==id
+);
+
+updateCart();
+
+}
+
+
+function openCart(){
+
+document
+.getElementById("cartOverlay")
+.classList.add("show");
+
+}
+
+
+function closeCart(){
+
+document
+.getElementById("cartOverlay")
+.classList.remove("show");
+
+}
+
+
+/* =====================================================
+   CHECKOUT
+===================================================== */
+
+function openCheckout(){
+
+if(cart.length===0){
+
+alert("Your cart is empty.");
+
+return;
+
+}
+
+
+closeCart();
+
+
+document
+.getElementById("checkoutModal")
+.classList.add("show");
+
+}
+
+
+function closeCheckout(){
+
+document
+.getElementById("checkoutModal")
+.classList.remove("show");
+
+}
+
+
+/* =====================================================
+   PLACE ORDER
+===================================================== */
+
+function placeOrder(){
+
+if(cart.length===0){
+
+alert("Your cart is empty.");
+
+return;
+
+}
+
+
+alert(
+"🎉 Order placed successfully!\n\nThank you for shopping with JEWELS AURELIA Jewellery."
+);
+
+
+cart=[];
+
+updateCart();
+
+closeCheckout();
+
+}
+
+
+/* =====================================================
+   CLOSE MODALS BY CLICKING OUTSIDE
+===================================================== */
+
+document
+.getElementById("searchOverlay")
+.addEventListener(
+"click",
+function(e){
+
+if(e.target===this){
+
+closeSearch();
+
+}
+
+}
+);
+
+
+document
+.getElementById("favoriteOverlay")
+.addEventListener(
+"click",
+function(e){
+
+if(e.target===this){
+
+closeFavorites();
+
+}
+
+}
+);
+
+
+document
+.getElementById("cartOverlay")
+.addEventListener(
+"click",
+function(e){
+
+if(e.target===this){
+
+closeCart();
+
+}
+
+}
+);
+
+
+/* =====================================================
+   ESC KEY
+===================================================== */
+
+document.addEventListener(
+"keydown",
+function(e){
+
+if(e.key==="Escape"){
+
+closeSearch();
+
+closeFavorites();
+
+closeCart();
+
+closeCheckout();
+
+}
+
+}
+);
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+displayProducts(products);
+
+updateFavoriteCount();
+
+displayFavorites();
+
+function toggleMobileMenu(){
+
+const menu=
+document.getElementById("navLinks");
+
+if(menu.style.display==="flex"){
+
+menu.style.display="none";
+
+}else{
+
+menu.style.display="flex";
+
+menu.style.position="absolute";
+
+menu.style.top="68px";
+
+menu.style.left="0";
+
+menu.style.width="100%";
+
+menu.style.background="#fffaf3";
+
+menu.style.flexDirection="column";
+
+menu.style.padding="20px";
+
+menu.style.gap="18px";
+
+}
+
+}
+
+
+function subscribeUser(){
+
+showToast(
+"Thank you for joining AURELIA ✨"
+);
+
+}
+
+
+
+
+
+</script>
+
+<div id="arModal" class="ar-modal">
+
+    <div class="camera-container">
+
+        <!-- Camera -->
+        <video id="cameraVideo"
+               autoplay
+               playsinline
+               muted>
+        </video>
+
+
+        <!-- AR Canvas -->
+        <canvas id="arCanvas"></canvas>
+
+
+        <!-- Instructions -->
+
+        <div class="instruction" id="instruction">
+            Show yourself to the camera
+        </div>
+
+
+        <!-- Close -->
+
+        <button class="close-btn"
+                onclick="closeAR()">
+            ×
+        </button>
+
+
+        <!-- Camera Message -->
+
+        <div class="camera-message"
+             id="cameraMessage">
+
+            <h2>Opening Camera...</h2>
+
+            <p>
+                Please allow camera permission
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

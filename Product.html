@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Jewellery AR Try On</title>
+
+    <!-- MediaPipe Hand Tracking -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #faf7f2;
+            color: #222;
+        }
+
+        /* Product Section */
+
+        .product-section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 50px 20px;
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .product-image {
+            width: 50%;
+        }
+
+        .product-image img {
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .product-info {
+            width: 50%;
+        }
+
+        .product-info h1 {
+            font-family: Georgia, serif;
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 25px;
+            margin: 20px 0;
+        }
+
+        .description {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        /* Try Button */
+
+        .try-btn {
+            border: none;
+            background: #111;
+            color: white;
+            padding: 16px 30px;
+            border-radius: 30px;
+            font-size: 17px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .try-btn:hover {
+            transform: translateY(-2px);
+            background: #333;
+        }
+
+        /* AR Popup */
+
+        .ar-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+        }
+
+        .ar-modal.active {
+            display: block;
+        }
+
+        /* Camera */
+
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #cameraVideo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+            /* Mirror front camera */
+            transform: scaleX(-1);
+        }
+
+        #arCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Instructions */
+
+        .instruction {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.65);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 15px;
+            z-index: 10;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* Close Button */
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-size: 25px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        /* Camera Permission Message */
+
+        .camera-message {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 5;
+        }
+
+        .camera-message h2 {
+            margin-bottom: 10px;
+        }
+
+        /* Mobile */
+
+        @media(max-width: 768px) {
+
+            .product-section {
+                flex-direction: column;
+                padding: 25px 15px;
+                gap: 25px;
+            }
+
+            .product-image,
+            .product-info {
+                width: 100%;
+            }
+
+            .product-info h1 {
+                font-size: 30px;
+            }
+
+            .try-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<!-- ================= PRODUCT ================= -->
+
+<section class="product-section">
+
+    <div class="product-image">
+
+        <!-- Product image -->
+        <img src="Img3.png"
+             alt="Gold Bracelet">
+
+    </div>
+
+
+    <div class="product-info">
+
+        <h1>Celestial Gold Bracelet</h1>
+
+        <div class="price">
+            ₹4,999
+        </div>
+
+        <p class="description">
+            Elegant handcrafted gold bracelet designed
+            for a timeless and luxurious look.
+        </p>
+
+        <!-- TRY BUTTON -->
+
+        <button class="try-btn" onclick="openAR()">
+            ✨ Try It On
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= AR CAMERA ================= -->
+
+<div id="arModal" class="ar-modal">
+
+    <div class="camera-container">
+
+        <!-- Camera -->
+        <video id="cameraVideo"
+               autoplay
+               playsinline
+               muted>
+        </video>
+
+
+        <!-- AR Canvas -->
+        <canvas id="arCanvas"></canvas>
+
+
+        <!-- Instructions -->
+
+        <div class="instruction" id="instruction">
+            Show yourself to the camera
+        </div>
+
+
+        <!-- Close -->
+
+        <button class="close-btn"
+                onclick="closeAR()">
+            ×
+        </button>
+
+
+        <!-- Camera Message -->
+
+        <div class="camera-message"
+             id="cameraMessage">
+
+            <h2>Opening Camera...</h2>
+
+            <p>
+                Please allow camera permission
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    /* ==========================================
+       VARIABLES
+    ========================================== */
+
+    const modal = document.getElementById("arModal");
+
+    const video = document.getElementById("cameraVideo");
+
+    const canvas = document.getElementById("arCanvas");
+
+    const ctx = canvas.getContext("2d");
+
+    const instruction =
+        document.getElementById("instruction");
+
+    const cameraMessage =
+        document.getElementById("cameraMessage");
+
+
+    /* ==========================================
+       BRACELET IMAGE
+    ========================================== */
+
+    const braceletImage = new Image();
+
+    braceletImage.src = "img22.png";
+
+
+    /* ==========================================
+       MEDIA PIPE HAND TRACKING
+    ========================================== */
+
+    const hands = new Hands({
+        locateFile: (file) => {
+
+            return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+
+        }
+    });
+
+
+    hands.setOptions({
+
+        maxNumHands: 1,
+
+        modelComplexity: 1,
+
+        minDetectionConfidence: 0.6,
+
+        minTrackingConfidence: 0.6
+
+    });
+
+
+    /* ==========================================
+       HAND DETECTED
+    ========================================== */
+
+    hands.onResults(onHandResults);
+
+
+    /* ==========================================
+       OPEN AR
+    ========================================== */
+
+    async function openAR() {
+
+        modal.classList.add("active");
+
+        cameraMessage.style.display = "block";
+
+        try {
+
+            const stream =
+                await navigator.mediaDevices.getUserMedia({
+
+                    video: {
+
+                        facingMode: "user",
+
+                        width: {
+                            ideal: 1280
+                        },
+
+                        height: {
+                            ideal: 720
+                        }
+
+                    },
+
+                    audio: false
+
+                });
+
+
+            video.srcObject = stream;
+
+            await video.play();
+
+            cameraMessage.style.display = "none";
+
+            startCameraTracking();
+
+        }
+
+        catch(error) {
+
+            console.error(error);
+
+            cameraMessage.innerHTML = `
+
+                <h2>Camera Access Required</h2>
+
+                <p>
+                    Please allow camera permission
+                    and try again.
+                </p>
+
+            `;
+
+        }
+
+    }
+
+
+
+    /* ==========================================
+       START HAND TRACKING
+    ========================================== */
+
+    let camera;
+
+    function startCameraTracking() {
+
+        camera = new Camera(video, {
+
+            onFrame: async () => {
+
+                await hands.send({
+                    image: video
+                });
+
+            },
+
+            width: 1280,
+
+            height: 720
+
+        });
+
+        camera.start();
+
+    }
+
+
+
+    /* ==========================================
+       HAND RESULTS
+    ========================================== */
+
+    function onHandResults(results) {
+
+        if (!video.videoWidth) {
+            return;
+        }
+
+
+        /* Canvas size */
+
+        canvas.width = video.videoWidth;
+
+        canvas.height = video.videoHeight;
+
+
+        /* Clear */
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        /* No hand */
+
+        if (
+            !results.multiHandLandmarks ||
+            results.multiHandLandmarks.length === 0
+        ) {
+
+            instruction.innerText =
+                "Show your hand to the camera";
+
+            return;
+
+        }
+
+
+        instruction.innerText =
+            "Bracelet placed on your wrist ✨";
+
+
+        const landmarks =
+            results.multiHandLandmarks[0];
+
+
+        /* ======================================
+           IMPORTANT LANDMARKS
+        ====================================== */
+
+        const wrist = landmarks[0];
+
+        const indexMCP = landmarks[5];
+
+        const middleMCP = landmarks[9];
+
+        const pinkyMCP = landmarks[17];
+
+
+        /* ======================================
+           MIRROR X
+        ====================================== */
+
+        function point(landmark) {
+
+            return {
+
+                x: (1 - landmark.x) *
+                   canvas.width,
+
+                y: landmark.y *
+                   canvas.height
+
+            };
+
+        }
+
+
+        const wristPoint =
+            point(wrist);
+
+        const indexPoint =
+            point(indexMCP);
+
+        const middlePoint =
+            point(middleMCP);
+
+        const pinkyPoint =
+            point(pinkyMCP);
+
+
+        /* ======================================
+           PALM CENTER
+        ====================================== */
+
+        const palmCenter = {
+
+            x:
+                (
+                    indexPoint.x +
+                    middlePoint.x +
+                    pinkyPoint.x
+                ) / 3,
+
+            y:
+                (
+                    indexPoint.y +
+                    middlePoint.y +
+                    pinkyPoint.y
+                ) / 3
+
+        };
+
+
+        /* ======================================
+           WRIST → PALM VECTOR
+        ====================================== */
+
+        const dx =
+            palmCenter.x -
+            wristPoint.x;
+
+        const dy =
+            palmCenter.y -
+            wristPoint.y;
+
+
+        const length =
+            Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+
+        const normalX =
+            dx / length;
+
+        const normalY =
+            dy / length;
+
+
+        /* ======================================
+           MOVE BRACELET SLIGHTLY BELOW WRIST
+        ====================================== */
+
+        const braceletCenter = {
+
+            x:
+                wristPoint.x -
+                normalX * 25,
+
+            y:
+                wristPoint.y -
+                normalY * 25
+
+        };
+
+
+        /* ======================================
+           WRIST WIDTH
+        ====================================== */
+
+        const wristWidth =
+
+            Math.sqrt(
+
+                Math.pow(
+                    indexPoint.x -
+                    pinkyPoint.x,
+                    2
+                )
+
+                +
+
+                Math.pow(
+                    indexPoint.y -
+                    pinkyPoint.y,
+                    2
+                )
+
+            );
+
+
+        /* ======================================
+           BRACELET SIZE
+        ====================================== */
+
+        const braceletWidth =
+            wristWidth * 2.0;
+
+
+        const aspectRatio =
+            braceletImage.height /
+            braceletImage.width;
+
+
+        const braceletHeight =
+            braceletWidth *
+            aspectRatio;
+
+
+        /* ======================================
+           BRACELET ROTATION
+        ====================================== */
+
+        let angle =
+            Math.atan2(
+                dy,
+                dx
+            ) + Math.PI / 2;
+
+
+        /* ======================================
+           DRAW BRACELET
+        ====================================== */
+
+        ctx.save();
+
+
+        ctx.translate(
+            braceletCenter.x,
+            braceletCenter.y
+        );
+
+
+        ctx.rotate(angle);
+
+
+        ctx.globalAlpha = 0.96;
+
+
+        ctx.drawImage(
+
+            braceletImage,
+
+            -braceletWidth / 2,
+
+            -braceletHeight / 2,
+
+            braceletWidth,
+
+            braceletHeight
+
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+
+    /* ==========================================
+       CLOSE AR
+    ========================================== */
+
+    function closeAR() {
+
+        modal.classList.remove("active");
+
+
+        /* Stop camera */
+
+        if (video.srcObject) {
+
+            video.srcObject
+                .getTracks()
+                .forEach(track => {
+
+                    track.stop();
+
+                });
+
+            video.srcObject = null;
+
+        }
+
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
